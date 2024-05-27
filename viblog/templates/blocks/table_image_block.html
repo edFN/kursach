@@ -1,0 +1,25 @@
+{% load wagtailimages_tags %}
+
+<style>
+  .table-image-block{
+  }
+</style>
+
+<div class="table-image-block d-flex flex-row mb-3 flex-wrap">
+    {% for img in images %}
+       {% image img width-400 %}
+    {% endfor %}
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+  const row = {{count_row}};
+  const column = {{count_column}};
+
+  $('.table-image-block img').css({
+    "width": `calc(${100/row}% - 10px)`,
+    "height": "auto",
+    "padding": `10px`
+  })
+
+</script>

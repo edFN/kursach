@@ -1,0 +1,14 @@
+{% load wagtailcore_tags %}
+<footer>
+    <div class="footer_content">
+        <div class="footer__logo">
+            {{settings.site_settings.SiteSettings.title}}
+        </div>
+        <div class="footer__text">
+            {{settings.site_settings.SiteSettings.text_footer|richtext}}
+        </div>
+        <div class="d-flex social__footer">
+            {% include 'blocks/social.html' %}
+        </div>
+    </div>
+</footer>

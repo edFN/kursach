@@ -1,0 +1,50 @@
+
+<style>
+    .button-like{
+    border: 2px solid red;
+    display: flex;
+    flex-direction: row;
+    padding:10px 40px;
+    font-weight: bold;
+    font-size: 1.15rem;
+    gap:10px;
+    border-radius: 10px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.button-liked{
+    background: #ff5858;
+}
+
+.button-like:active{
+    scale: .4;
+    transition: 2s;
+}
+
+/*.button-like:hover{*/
+/*    background: #ff5858;*/
+/*    transition: 0.6s;*/
+/*}*/
+
+.button-like__text{
+    margin: auto 0;
+    text-transform: uppercase;
+}
+
+button_like__logo{
+    background: red;
+    padding-bottom: 10px;
+}
+</style>
+<div class="button-like {% if liked %} button-liked {% endif %} flex flex-row">
+    <div class="button-like__text">Like</div>
+</div>
+
+<script>
+        $('.button-like').click(() => {
+            console.log('flower')
+            $('.button-like').toggleClass('button-liked')
+        })
+  
+</script>

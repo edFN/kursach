@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load wagtailimages_tags %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/blog_app/article.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 gap-3">
+        <div class="article-type-info flex flex-row mb-4">
+            <div class="category-list-block">
+                {% for category in page.specific.category.all %}
+                    <div class="article-category-block">
+                        {{category}}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="article-published__at ">{{page.first_published_at | date:'d.m.Y H:m'}}</div>
+        </div>
+        <div class="article-overview">
+            <div class="article-title text-left">{{page.title}}</div>
+            <div class="article-description">
+                <p class="lead mb-4 text-left">{{page.description}}</p>
+            </div>
+            <div class="article-card-image text-center mb-4">
+                {% srcset_image page.image_card width-{400,800,1200} sizes="(max-width: 1200px) 400px, 80vw" %}
+            </div>
+        </div>
+
+        <div class="article-content-block flex">
+            {% for block in page.content%}
+                {% if block.block_type == 'richtext' %}
+                    <div class="article-{{block.block_type}}">{{block.value}}</div>
+                {% elif block.block_type == 'slider_image' %}
+                    <div class="article-{{block.block_type}}">{% include 'blocks/image_slider.html' with images=block.value %}</div>
+                {% elif block.block_type == 'inform_block' %}
+                    <div class="article-{{block.block_type}}">{% include 'blocks/inform_block.html' with color=block.value.background text=block.value.text%}</div>
+                {% elif block.block_type == 'table_image' %}
+                    <div class="article-{{block.block_type}}">{% include 'blocks/table_image_block.html' with count_row=block.value.count_row count_column=block.value.count_column images=block.value.images %}</div>
+                {% elif block.block_type == 'code' %}
+                    {{block}}
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="article-actions-block">
+            {% include 'blocks/button_like.html' with liked=True %}
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}
