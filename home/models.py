@@ -13,7 +13,7 @@ class EmptyPage(Page):
 
 class HomePage(Page):
     content = StreamField([
-        ('paragraph', RichTextBlock()),
+        ('richtext', RichTextBlock()),
         ('slider_page', SliderPageBlock()),
         ('table', TableCardBlock())
     ], null=True, blank=True, verbose_name="Содержимое")

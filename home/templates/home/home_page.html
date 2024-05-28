@@ -12,10 +12,20 @@ Delete the line below if you're just getting started and want to remove the welc
 {% endblock extra_css %}
 
 {% block content %}
-
+    <div class="home-content-block flex">
+        {% for block in page.specific.content %}
+            {% if block.block_type == 'richtext' %}
+                    <div class="home-{{block.block_type}}">{{block.value}}</div>
+            {% elif block.block_type == 'slider_page' %}
+                    <div class="home-{{block.block_type}}">
+                        {% include 'blocks/slider_page.html' with pages=block.value.pages type=block.value.type %}
+                    </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 {% comment %}
 Delete the line below if you're just getting started and want to remove the welcome screen!
-{% endcomment %}
-{% include 'home/welcome_page.html' %}
 
+<!--{% include 'home/welcome_page.html' %}-->
+{% endcomment %}
 {% endblock content %}
