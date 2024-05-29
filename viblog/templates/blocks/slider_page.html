@@ -96,6 +96,20 @@
         flex-direction: row;
         height: auto;
     }
+    .category-text{
+        font-family: sans-serif;
+        font-size: 1.25rem;
+    }
+
+    .category-text::after{
+        content:' • ';
+        font-weight: bolder;
+        padding: 10px;
+    }
+    .category-text:last-child::after{
+        content: '';
+    }
+
 </style>
 
 <div class="slider-page-block col-lg-10">

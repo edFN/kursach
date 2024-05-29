@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import models
 from modelcluster.fields import ParentalManyToManyField
 from wagtail.admin.panels import FieldPanel
@@ -24,11 +25,41 @@ class CategoryArticle(models.Model):
         return self.title or ''
 
 
+class ArticleListPage(Page):
+    category = models.ForeignKey(CategoryArticle, verbose_name="Категории статей",
+                                 null=False, blank=False, on_delete=models.CASCADE)
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        articles = ArticlePage.objects.live().public().filter(category=self.category)
+
+        paginator = Paginator(articles, 12)
+
+        page = request.GET.get("page")
+
+        try:
+            articles = paginator.page(page)
+        except PageNotAnInteger:
+            articles = paginator.page(1)
+        except EmptyPage:
+            articles = paginator.page(paginator.num_pages)
+
+        context['articles'] = articles
+
+        return context
+
+    content_panels = Page.content_panels + [
+        FieldPanel('category')
+    ]
+
+    class Meta:
+        verbose_name = "Список статей"
+
+
 class ArticlePage(Page):
     description = models.TextField(verbose_name="Описание", null=True, blank=False)
 
     category = ParentalManyToManyField(CategoryArticle, verbose_name="Категории статьи",
-                                      null=True, blank=True)
+                                       null=True, blank=True)
 
     image_card = models.ForeignKey(get_image_model(), null=True, blank=True, on_delete=models.SET_NULL)
 

@@ -4,7 +4,7 @@ from wagtail.fields import StreamField, RichTextField
 
 from wagtail.models import Page
 
-from shared.blocks import SliderPageBlock, TableCardBlock
+from shared.blocks import SliderPageBlock, TableCardBlock, InformBlock
 
 
 class EmptyPage(Page):
@@ -15,7 +15,8 @@ class HomePage(Page):
     content = StreamField([
         ('richtext', RichTextBlock()),
         ('slider_page', SliderPageBlock()),
-        ('table', TableCardBlock())
+        ('table_page', TableCardBlock()),
+        ('inform_block', InformBlock()),
     ], null=True, blank=True, verbose_name="Содержимое")
 
     max_count = 1

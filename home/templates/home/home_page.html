@@ -5,27 +5,33 @@
 
 {% block extra_css %}
 
-{% comment %}
-Delete the line below if you're just getting started and want to remove the welcome screen!
-{% endcomment %}
-<link rel="stylesheet" href="{% static 'css/welcome_page.css' %}">
+    {% comment %}
+        Delete the line below if you're just getting started and want to remove the welcome screen!
+    {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/welcome_page.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
-    <div class="home-content-block flex">
+    <div class="home-content-block flex " style="gap: 25px">
         {% for block in page.specific.content %}
             {% if block.block_type == 'richtext' %}
-                    <div class="home-{{block.block_type}}">{{block.value}}</div>
+                <div class="home-{{ block.block_type }}">{{ block.value }}</div>
             {% elif block.block_type == 'slider_page' %}
-                    <div class="home-{{block.block_type}}">
-                        {% include 'blocks/slider_page.html' with pages=block.value.pages type=block.value.type %}
-                    </div>
+                <div class="home-{{ block.block_type }}">
+                    {% include 'blocks/slider_page.html' with pages=block.value.pages type=block.value.type %}
+                </div>
+            {% elif block.block_type == 'table_page' %}
+                <div class="home-{{ block.block_type }}">
+                    {% include 'blocks/table_page.html' with count_row=block.value.count_row count_column=block.value.count_column pages=block.value.pages %}
+                </div>
+            {% elif block.block_type == 'inform_block' %}
+                <div class="home-{{block.block_type}}">{% include 'blocks/inform_block.html' with color=block.value.background text=block.value.text%}</div>
             {% endif %}
         {% endfor %}
     </div>
-{% comment %}
-Delete the line below if you're just getting started and want to remove the welcome screen!
+    {% comment %}
+        Delete the line below if you're just getting started and want to remove the welcome screen!
 
-<!--{% include 'home/welcome_page.html' %}-->
-{% endcomment %}
+        <!--{% include 'home/welcome_page.html' %}-->
+    {% endcomment %}
 {% endblock content %}
