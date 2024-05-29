@@ -26,6 +26,11 @@
                 </div>
             {% elif block.block_type == 'inform_block' %}
                 <div class="home-{{block.block_type}}">{% include 'blocks/inform_block.html' with color=block.value.background text=block.value.text%}</div>
+
+            {% elif block.block_type == 'email_block' %}
+                <div class="home-{{ block.block_type}}">
+                    {% include 'blocks/email_block.html' with block=block.value %}
+                </div>
             {% endif %}
         {% endfor %}
     </div>
