@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'blog_app',
     'site_settings',
+    'notification_app',
 ]
 
 MIDDLEWARE = [
