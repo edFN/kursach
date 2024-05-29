@@ -1,0 +1,85 @@
+{% load wagtailcore_tags %}
+
+<style>
+    .email-block{
+        margin:0 auto;
+        -webkit-box-shadow: -6px 10px 35px 12px rgba(34, 60, 80, 0.2);
+        -moz-box-shadow: -6px 10px 35px 12px rgba(34, 60, 80, 0.2);
+        box-shadow: -6px 10px 35px 12px rgba(34, 60, 80, 0.2);
+        border-radius: 10px;
+        padding: 2rem;
+
+        border: 1px solid blue;
+    }
+    .email-block-title{
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+        font-family: sans-serif;
+        font-weight: bold;
+    }
+    .email-block-description{
+        text-wrap: normal;
+    }
+
+    .form-group{
+        display: flex;
+        flex-direction: row;
+        gap:20px;
+    }
+
+    .success-email{
+        background: #adf39e;
+        border:1px solid green;
+    }
+
+</style>
+
+<div class="email-block col-lg-10 {% if request.session.is_emailed %} success-email {% endif %}">
+    {% if request.session.is_emailed %}
+        <div class="email-block-success">
+            {{ block.text_success | richtext}}
+        </div>
+    {% else %}
+        <div class="email-block-form flex justify-content-center">
+            <div class="email-block-title">
+                {{ block.title }}
+            </div>
+            <div class="email-block-description">
+                {{ block.text | richtext}}
+            </div>
+            <div class="email-form">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group mt-3 col-lg-4">
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Введите email">
+                        <button type="button" class="btn btn-primary" id="sendMail">Отправить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+
+    $('#sendMail').click(()=>{
+
+        const email = $('#exampleInputEmail1').val()
+        console.log('email', email)
+        $.ajax({
+            url: '/api/email_subscribe',
+            method: "POST",
+            data: {
+                'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+                "email": email
+            },
+            success: function(data){
+                window.location.reload()
+            },
+            error: ()=>{
+                alert('Error')
+            }
+
+        })
+    })
+</script>

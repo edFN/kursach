@@ -13,11 +13,14 @@ class AcceptEmailRegister(APIView):
                                        allow_null=False)
 
     def post(self, request, *args, **kwargs):
-
         serializer = AcceptEmailRegister.Validator(data=request.data)
 
         serializer.is_valid(raise_exception=True)
 
-        NotificationEmailRegister.objects.create(email=serializer.validated_data['email'])
+        NotificationEmailRegister.objects.get_or_create(email=serializer.validated_data['email'])
+
+        request.session['is_emailed'] = True
 
         return Response(status=200)
+
+

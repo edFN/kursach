@@ -16,10 +16,16 @@ class SnippetRegisterForm(models.Model):
     class Meta:
         verbose_name = "Блок приема Email пользователя"
 
+    def __str__(self):
+        return self.title or ''
+
 
 class NotificationEmailRegister(models.Model):
-    email = models.EmailField("Email пользователя", null=True, blank=False)
+    email = models.EmailField("Email пользователя", null=True, blank=False, unique=True)
 
     class Meta:
         verbose_name = "Электронная почта"
         verbose_name_plural = "Электронная почта для рассылки"
+
+    def __str__(self):
+        return self.email or ''

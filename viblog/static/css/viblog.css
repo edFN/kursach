@@ -119,6 +119,7 @@ footer {
     display: flex;
     gap: 1rem;
     overflow-x: clip;
+    width: 100%;
 }
 
 footer .footer__logo {
@@ -140,6 +141,7 @@ footer .footer__logo {
     text-wrap: normal;
     font-weight: lighter;
     color: #8f8888;
+    width: 66%;
 }
 
 span.social{
