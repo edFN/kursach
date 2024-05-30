@@ -40,16 +40,68 @@
                 {% elif block.block_type == 'table_image' %}
                     <div class="article-{{block.block_type}}">{% include 'blocks/table_image_block.html' with count_row=block.value.count_row count_column=block.value.count_column images=block.value.images %}</div>
                 {% elif block.block_type == 'code' %}
-                    {{block}}
+                    <div class="article-{{ block.block_type }}">{{block}}</div>
                 {% endif %}
             {% endfor %}
         </div>
 
-        <div class="article-actions-block">
+        <div class="article-actions-block col-lg-6">
             {% include 'blocks/button_like.html' with liked=True %}
+            {% include 'blocks/button_report.html' %}
+        </div>
+    </div>
+
+    <div class="moderation-overflow">
+        >
+        <div class='moderation-report-form'>
+            <h3>Данные заявки</h3>
+            <div class="moderation-report__selected">
+
+            </div>
+
+            <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                  <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            </div>
+
+            <div class="mb-3">
+                  <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
         </div>
     </div>
 
 
+
 </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        $(document).ready(()=> {
+            $('.button-report').click(() => {
+
+                $('.moderation-overflow').toggle()
+
+                const content_blocks = $('.article-content-block').children('div')
+
+                $.each(content_blocks, (index, value) => {
+                    console.log('toggle', index, value)
+                    $(value).toggleClass('moderation')
+                })
+            })
+
+            $(document).on('click','.moderation', function(e){
+                console.log(e.currentTarget)
+                $(e.currentTarget).toggleClass('moderation-active')
+                console.log("flower")
+                console.log($('.moderation-report__selected').text())
+            })
+
+        })
+
+
+
+
+    </script>
 {% endblock %}

@@ -82,4 +82,87 @@ code{
     display: flex;
     margin-top: 2rem;
     flex-direction: row;
+    gap:15px;
+}
+
+.moderation{
+    background: white;
+    cursor:pointer;
+    opacity: 0.4;
+    z-index: 4;
+}
+.moderation:hover{
+    background-color: white;
+    opacity: 1.0;
+    z-index: 4;
+}
+
+.moderation-active{
+    opacity: 1.0;
+    z-index: 5;
+    background-color: white;
+}
+
+.moderation-active::before{
+    position: absolute;
+    font-size: 2rem;
+    color: red;
+    z-index: 999;
+}
+
+.moderation-overflow{
+    display: none;
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 150%;
+    background: #052249;
+    opacity: 0.9;
+    z-index: 0;
+}
+
+.moderation-overflow h3{
+    color: black;
+}
+
+.moderation-report-form{
+    display: flex;
+    flex-direction: column;
+
+    gap:15px;
+
+    color:black;
+    padding: 0.75rem;
+    position: fixed;
+    right: 35px;
+    top:50%;
+
+    width: 20vw;
+    opacity: 1;
+
+    z-index: 20;
+
+    background: white;
+    border:10px solid lawngreen;
+    border-radius: 10px;
+}
+
+
+
+.moderation-report__selected{
+    display: block;
+    flex-direction: column;
+    width: 100%;
+    height: 35%;
+    padding: 2rem;
+
+    border: 1px solid black;
+
+    overflow-y: scroll;
+}
+
+.moderation-report__selected::-webkit-scrollbar {
+    width: 7px;
+    background-color: #f9f9fd;
 }
