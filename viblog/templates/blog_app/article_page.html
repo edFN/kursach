@@ -3,82 +3,95 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/blog_app/article.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blog_app/article.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-lg-8 gap-3">
-        <div class="article-type-info flex flex-row mb-4">
-            <div class="category-list-block">
-                {% for category in page.specific.category.all %}
-                    <div class="article-category-block">
-                        {{category}}
-                    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-8 gap-3">
+            <div class="article-type-info flex flex-row mb-4">
+                <div class="category-list-block">
+                    {% for category in page.specific.category.all %}
+                        <div class="article-category-block">
+                            {{ category }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="article-published__at ">{{ page.first_published_at | date:'d.m.Y H:m'}}</div>
+            </div>
+            <div class="article-overview">
+                <div class="article-title text-left">{{ page.title }}</div>
+                <div class="article-description">
+                    <p class="lead mb-4 text-left">{{ page.description }}</p>
+                </div>
+                <div class="article-card-image text-center mb-4">
+                    {% srcset_image page.image_card width-{400,800,1200} sizes="(max-width: 1200px) 400px, 80vw" %}
+                </div>
+            </div>
+
+            <div class="article-content-block flex">
+                {% for block in page.content %}
+                    {% if block.block_type == 'richtext' %}
+                        <div class="article-{{ block.block_type }}">{{ block.value }}</div>
+                    {% elif block.block_type == 'slider_image' %}
+                        <div class="article-{{ block.block_type }}">{% include 'blocks/image_slider.html' with images=block.value %}</div>
+                    {% elif block.block_type == 'inform_block' %}
+                        <div class="article-{{ block.block_type }}">{% include 'blocks/inform_block.html' with color=block.value.background text=block.value.text %}</div>
+                    {% elif block.block_type == 'table_image' %}
+                        <div class="article-{{ block.block_type }}">{% include 'blocks/table_image_block.html' with count_row=block.value.count_row count_column=block.value.count_column images=block.value.images %}</div>
+                    {% elif block.block_type == 'code' %}
+                        <div class="article-{{ block.block_type }}">{{ block }}</div>
+                    {% endif %}
                 {% endfor %}
             </div>
-            <div class="article-published__at ">{{page.first_published_at | date:'d.m.Y H:m'}}</div>
-        </div>
-        <div class="article-overview">
-            <div class="article-title text-left">{{page.title}}</div>
-            <div class="article-description">
-                <p class="lead mb-4 text-left">{{page.description}}</p>
-            </div>
-            <div class="article-card-image text-center mb-4">
-                {% srcset_image page.image_card width-{400,800,1200} sizes="(max-width: 1200px) 400px, 80vw" %}
+
+            <div class="article-actions-block col-lg-6">
+                {% include 'blocks/button_like.html' with liked=True %}
+                {% include 'blocks/button_report.html' %}
             </div>
         </div>
 
-        <div class="article-content-block flex">
-            {% for block in page.content%}
-                {% if block.block_type == 'richtext' %}
-                    <div class="article-{{block.block_type}}">{{block.value}}</div>
-                {% elif block.block_type == 'slider_image' %}
-                    <div class="article-{{block.block_type}}">{% include 'blocks/image_slider.html' with images=block.value %}</div>
-                {% elif block.block_type == 'inform_block' %}
-                    <div class="article-{{block.block_type}}">{% include 'blocks/inform_block.html' with color=block.value.background text=block.value.text%}</div>
-                {% elif block.block_type == 'table_image' %}
-                    <div class="article-{{block.block_type}}">{% include 'blocks/table_image_block.html' with count_row=block.value.count_row count_column=block.value.count_column images=block.value.images %}</div>
-                {% elif block.block_type == 'code' %}
-                    <div class="article-{{ block.block_type }}">{{block}}</div>
-                {% endif %}
-            {% endfor %}
+        <div class="moderation-overflow">
+            <div class='moderation-report-form'>
+                <div class="moderation-report-title">
+                    <h3>Данные заявки</h3>
+                    <div class="moderation-report-close">
+                         <svg width="50px" height="50px" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.96967 16.4697C6.67678 16.7626 6.67678 17.2374 6.96967 17.5303C7.26256 17.8232 7.73744 17.8232 8.03033 17.5303L6.96967 16.4697ZM13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697L13.0303 12.5303ZM11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303L11.9697 11.4697ZM18.0303 7.53033C18.3232 7.23744 18.3232 6.76256 18.0303 6.46967C17.7374 6.17678 17.2626 6.17678 16.9697 6.46967L18.0303 7.53033ZM13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303L13.0303 11.4697ZM16.9697 17.5303C17.2626 17.8232 17.7374 17.8232 18.0303 17.5303C18.3232 17.2374 18.3232 16.7626 18.0303 16.4697L16.9697 17.5303ZM11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697L11.9697 12.5303ZM8.03033 6.46967C7.73744 6.17678 7.26256 6.17678 6.96967 6.46967C6.67678 6.76256 6.67678 7.23744 6.96967 7.53033L8.03033 6.46967ZM8.03033 17.5303L13.0303 12.5303L11.9697 11.4697L6.96967 16.4697L8.03033 17.5303ZM13.0303 12.5303L18.0303 7.53033L16.9697 6.46967L11.9697 11.4697L13.0303 12.5303ZM11.9697 12.5303L16.9697 17.5303L18.0303 16.4697L13.0303 11.4697L11.9697 12.5303ZM13.0303 11.4697L8.03033 6.46967L6.96967 7.53033L11.9697 12.5303L13.0303 11.4697Z"
+                          fill="#000000"/>
+                </svg>
+                    </div>
+                </div>
+                <div class="moderation-report__selected">
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="exampleFormControlInput1"
+                           placeholder="name@example.com">
+                </div>
+
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+            </div>
         </div>
 
-        <div class="article-actions-block col-lg-6">
-            {% include 'blocks/button_like.html' with liked=True %}
-            {% include 'blocks/button_report.html' %}
-        </div>
+
     </div>
-
-    <div class="moderation-overflow">
-        >
-        <div class='moderation-report-form'>
-            <h3>Данные заявки</h3>
-            <div class="moderation-report__selected">
-
-            </div>
-
-            <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label">Email address</label>
-                  <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-            </div>
-
-            <div class="mb-3">
-                  <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-        </div>
-    </div>
-
-
-
-</div>
 {% endblock %}
 
 {% block extra_js %}
     <script>
-        $(document).ready(()=> {
+
+        let reportItems = []
+
+
+
+
+        $(document).ready(() => {
             $('.button-report').click(() => {
 
                 $('.moderation-overflow').toggle()
@@ -86,21 +99,73 @@
                 const content_blocks = $('.article-content-block').children('div')
 
                 $.each(content_blocks, (index, value) => {
-                    console.log('toggle', index, value)
                     $(value).toggleClass('moderation')
                 })
             })
 
-            $(document).on('click','.moderation', function(e){
-                console.log(e.currentTarget)
+            $('.moderation-report-close').click((e)=>{
+                reportItems = []
+                $('.moderation-overflow').toggle()
+
+                const content_blocks = $('.article-content-block').children('div')
+
+                $.each(content_blocks, (index, value) => {
+                    $(value).removeClass('moderation')
+                })
+
+                $('.moderation-report__selected').clear()
+            })
+
+            $(document).on('click', '.moderation', function (e) {
                 $(e.currentTarget).toggleClass('moderation-active')
-                console.log("flower")
-                console.log($('.moderation-report__selected').text())
+
+                console.log($(e.currentTarget).index())
+
+                if (!reportItems.includes($(e.currentTarget).index())) {
+                    reportItems.push($(e.currentTarget).index());
+
+                    let data=''
+                    reportItems.map((index,element)=>{
+                       data += `<div index=${index} class='reported_item'>Блок ${index+1}</div>`
+                    })
+
+                    $('.moderation-report__selected').html(data)
+
+                } else {
+                    console.log("Check",$(e.currentTarget).index())
+
+                    reportItems.splice(reportItems.indexOf(
+                        $(e.currentTarget).index()), 1)
+
+                    let data = ''
+
+                    reportItems.map((index,element)=>{
+                       data += `<div index=${index} class='reported_item'>Блок ${index+1}</div>`
+                    })
+
+                    $('.moderation-report__selected').html(data)
+                }
+
+
+                console.log(reportItems);
+            })
+
+            $(document).on('click', '.reported_item', (e)=>{
+                const index = $(e.currentTarget).attr('index')
+
+                const node = $('.moderation').eq(index)
+
+                $(node).toggleClass('moderation-active')
+
+                reportItems.splice(reportItems.indexOf(
+                        index), 1)
+
+                $(e.currentTarget).remove()
+
+
             })
 
         })
-
-
 
 
     </script>
