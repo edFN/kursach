@@ -7,9 +7,9 @@
                 </div>
 
                 <div class="col-md-3 order-3 order-md-1">
-                    <form class="search-form" action="#">
+                    <form class="search-form" action="{% url 'search' %}">
                         <span class="icon-search2"></span>
-                        <input class="form-control" type="search" placeholder="Поиск..."/>
+                        <input class="form-control" type="search" name="query" placeholder="Поиск..."/>
                     </form>
                 </div>
 
