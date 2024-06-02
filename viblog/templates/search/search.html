@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+
+{% block extra_css %}
+    <style>
+        .search-result-item{
+            display: block;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            border: 1px #888 solid;
+            padding: 10px;
+        }
+        .search-title-block{
+            margin-bottom: 10px;
+            font-size: 1.75rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .search-description-block{
+            text-wrap: normal;
+            font-size: 1.25rem;
+            font-family: sans-serif;
+        }
+        .search-result-item a{
+            text-decoration: none;
+            color:black;
+        }
+        .search-result-item a:visited{
+            text-decoration: none;
+            color:black;
+        }
+
+        .search-result-item:hover{
+            background: #eae0e0;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+        {% if search_results %}
+            <h1>Результат поиска</h1>
+        {% else %}
+            <h1>Поиск</h1>
+        {% endif %}
+
+        <form action="{% url 'search' %}" method="get" class="search-form col-lg-7 flex">
+            <input type="text" class='form-control' name="query" {% if query_string %} value="{{ query_string }}"{% endif %}>
+            <input type="submit" value="Search" hidden>
+        </form>
+
+        {% if search_results %}
+            <ul>
+                {% for result in search_results %}
+                    <div class="search-result-item col-lg-10">
+                        <a href="{{ result.specific.url }}">
+                            <div class="search-title-block">
+                                {{ result.specific.title }}
+                            </div>
+
+                            <div class="search-description-block">
+                                {{ result.specific.description }}
+                            </div>
+                        </a>
+                    </div>
+
+                {% endfor %}
+            </ul>
+        {% endif %}
+{% endblock %}

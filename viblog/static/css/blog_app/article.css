@@ -225,3 +225,17 @@ box-shadow: 2px 3px 12px 14px rgba(34, 60, 80, 0.2);
 .report__button:active{
     scale: 0.95;
 }
+@media screen and (max-width: 700px) {
+    .button-report{
+        display: none !important;
+    }
+    .article-actions-block{
+        justify-content: center;
+    }
+    .article-type-info {
+        flex-direction: column !important;
+    }
+    .category-list-block{
+        display: none;
+    }
+}

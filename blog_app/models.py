@@ -113,3 +113,4 @@ class ArticleReportModel(models.Model):
     class Meta:
         verbose_name = "Замечание пользователя"
         verbose_name_plural = "Замечания пользователей"
+

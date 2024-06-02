@@ -8,7 +8,7 @@
 
 {% block content %}
     <div class="row justify-content-center">
-        <div class="col-lg-8 gap-3">
+        <div class="col-lg-8 gap-3 col-sm-12">
             <div class="article-type-info flex flex-row mb-4" id="article_info" object_id="{{ page.id }}">
                 <div class="category-list-block">
                     {% for category in page.specific.category.all %}
@@ -187,7 +187,15 @@
                             'message': $("#report_message_id").val()
                         },
                         success: () => {
-                            alert("Success!")
+                            $('.moderation-overflow').toggle()
+                            $('.button-report').css({"display":"none"})
+
+                            const content_blocks = $('.article-content-block').children('div')
+
+                            $.each(content_blocks, (index, value) => {
+                                $(value).toggleClass('moderation')
+                            })
+
                         },
                         error: () => {
                             alert("FUCK")
