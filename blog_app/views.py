@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from wagtail.fields import StreamField
 
-from blog_app.models import ArticlePage, ArticleReportModel
+from blog_app.models import ArticlePage, ArticleReportModel, UserLikesModel
+from blog_app.utils import get_client_ip_address
 
 
 # Create your views here.
@@ -33,5 +34,31 @@ class ArticlePageReportAPI(APIView):
                                           report_items=json.dumps(report_blocks),
                                           email=email,
                                           message=message)
+
+        return Response(status=200)
+
+
+class LikeArticeAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        article_id = request.data.get('page_id')
+
+        article_instance = get_object_or_404(ArticlePage, pk=article_id)
+
+        remote_addr = get_client_ip_address(request)
+
+        print(remote_addr)
+
+        item, created = UserLikesModel.objects.get_or_create(user_ip=remote_addr, article=article_instance)
+
+        print("Created",created)
+
+        if not created and item.is_active:
+            print("Here1")
+            item.is_active = False
+            item.save()
+        elif not item.is_active:
+            print("Here2")
+            item.is_active=True
+            item.save()
 
         return Response(status=200)

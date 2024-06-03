@@ -6,6 +6,7 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
+from blog_app.views import LikeArticeAPIView
 from search import views as search_views
 
 urlpatterns = [
@@ -30,6 +31,7 @@ urlpatterns = urlpatterns + [
     # the list:
     path('api/', include('notification_app.urls')),
     path('report/', include('blog_app.urls')),
+    path('like/', LikeArticeAPIView.as_view()),
     path("", include(wagtail_urls)),
     # Alternatively, if you want Wagtail pages to be served from a subpath
     # of your site, rather than the site root:

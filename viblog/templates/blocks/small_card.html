@@ -1,54 +1,5 @@
 {% load wagtailimages_tags %}
 
-<style>
-    .small_card__image_block{
-        display: block;
-        min-height: 250px;
-        width: 100%;
-    }
-    .small_card__image_block img{
-        width: 100%;
-        height: 100%;
-        border-radius: 15px;
-        object-position: center;
-        object-fit: fill;
-    }
-
-    .thubnail-small{
-        flex: 0 0 200px;
-    }
-
-    .small_card__block{
-        display: flex;
-        flex-direction: column;
-    }
-    .small_card__description-block {
-        display: flex;
-        flex-direction: column;
-        gap:10px;
-        font-family: sans-serif;
-        text-wrap: normal;
-    }
-
-    .small-card__heading-block-card{
-        font-weight: bold;
-        font-size: 1.75rem;
-    }
-    .small-card__heading-block-card a{
-        color:black;
-    }
-    .small-card__description-card{
-        color: #888;
-        font-size: 1.25rem;
-        text-wrap: normal;
-        overflow: hidden;
-        padding-right:0.5rem;
-        padding-top: 0.5rem;
-    }
-
-</style>
-
-
 <div class="small_card__block col-lg-3">
         <div class="small_card__image_block thubnail-small">
             {% srcset_image page.specific.image_card width-{400,800} sizes="(max-height: 400px) 400px, 80vw" %}

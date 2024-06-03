@@ -11,6 +11,7 @@ from wagtail.models import Page
 from wagtail.search import index
 from wagtailcodeblock.blocks import CodeBlock
 
+from blog_app.utils import get_client_ip_address
 from shared.blocks import SliderImageBlock, InformBlock, TableImageBlock
 
 
@@ -86,6 +87,24 @@ class ArticlePage(Page):
         index.SearchField('description')
     ]
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+
+        addr = get_client_ip_address(request)
+        #
+        try:
+            user_like = UserLikesModel.objects.get(article=context['page'], user_ip=addr)
+            context['is_liked'] = user_like.is_active
+        except:
+            context['is_liked'] = False
+
+        context['likes'] = UserLikesModel.objects.filter(article=context['page'], is_active=True).count()
+
+        print(context)
+
+        return context
+
     def __str__(self):
         return self.title or ''
 
@@ -103,13 +122,12 @@ class ArticleReportModel(models.Model):
         ('table_image', TableImageBlock()),
         ('code', CodeBlock()),
         ('document', ListBlock(DocumentChooserBlock()))
-    ], null=True,blank=True)
+    ], null=True, blank=True)
     email = models.EmailField(verbose_name="Емейл отправителя", null=True, blank=True)
-    message = models.TextField(verbose_name="Текст замечания", null=True,blank=True)
-
+    message = models.TextField(verbose_name="Текст замечания", null=True, blank=True)
 
     panels = [
-        FieldPanel('message',read_only=True), FieldPanel('page', read_only=True),
+        FieldPanel('message', read_only=True), FieldPanel('page', read_only=True),
         FieldPanel('report_items'), FieldPanel('email', read_only=True)
     ]
 
@@ -117,3 +135,11 @@ class ArticleReportModel(models.Model):
         verbose_name = "Замечание пользователя"
         verbose_name_plural = "Замечания пользователей"
 
+
+class UserLikesModel(models.Model):
+    user_ip = models.GenericIPAddressField("Адрес пользователя", null=True, blank=False)
+    article = models.ForeignKey(ArticlePage, null=True, blank=False, on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Лайки пользователей"

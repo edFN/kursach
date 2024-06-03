@@ -50,7 +50,7 @@
             </div>
 
             <div class="article-actions-block col-lg-6">
-                {% include 'blocks/button_like.html' with liked=True %}
+                {% include 'blocks/button_like.html' with liked=is_liked like_count=likes %}
                 {% include 'blocks/button_report.html' %}
             </div>
         </div>
@@ -101,7 +101,32 @@
 
         let reportItems = []
 
+        $('.button-like').click(() => {
+             $.ajax(
+                 {
+                     url: '/like/',
+                     method: "POST",
+                     data: {
+                                'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+                                'page_id': $("#article_info").attr('object_id'),
+                     },
+                     success: ()=>{
+                         const likes = Number($('.button-like__text').text())
 
+                         if($('.button-like').hasClass('button-liked')) {
+                             $('.button-like__text').text(likes - 1)
+                         }else{
+                             $('.button-like__text').text(likes + 1)
+                         }
+
+                         $('.button-like').toggleClass('button-liked')
+
+                     }
+                 }
+             )
+            console.log('flower')
+
+        })
 
 
         $(document).ready(() => {

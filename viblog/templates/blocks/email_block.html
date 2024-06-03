@@ -1,38 +1,5 @@
 {% load wagtailcore_tags %}
 
-<style>
-    .email-block{
-        margin:0 auto;
-        -webkit-box-shadow: -6px 10px 35px 12px rgba(34, 60, 80, 0.2);
-        -moz-box-shadow: -6px 10px 35px 12px rgba(34, 60, 80, 0.2);
-        box-shadow: -6px 10px 35px 12px rgba(34, 60, 80, 0.2);
-        border-radius: 10px;
-        padding: 2rem;
-
-        border: 1px solid blue;
-    }
-    .email-block-title{
-        font-size: 1.4rem;
-        margin-bottom: 1rem;
-        font-family: sans-serif;
-        font-weight: bold;
-    }
-    .email-block-description{
-        text-wrap: normal;
-    }
-
-    .form-group{
-        display: flex;
-        flex-direction: row;
-        gap:20px;
-    }
-
-    .success-email{
-        background: #adf39e;
-        border:1px solid green;
-    }
-
-</style>
 
 <div class="email-block col-lg-10 {% if request.session.is_emailed %} success-email {% endif %}">
     {% if request.session.is_emailed %}
