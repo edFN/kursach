@@ -1,11 +1,39 @@
 {% load wagtailimages_tags %}
 
 <style>
+    .document-blocks{
+        gap:20px;
+    }
+    .document-item{
+        display: flex;
+        flex-direction: row;
+        gap:10px;
+        cursor: pointer;
+        -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+        -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+        box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+        padding: 1rem;
+        border-radius: 20px;
+        width: 20rem;
+        margin-left: 10px;
+        border:2px solid #888;
 
+    }
+    .document-title{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        align-content: center;
+        font-size: 1.2rem;
+        font-family: sans-serif;
+    }
+    .document-title a {
+        color: black;
+    }
 </style>
 
-<div class="document-blocks flex row justify-content-center
-            col-lg-6 col-sm-4">
+<div class="document-blocks flex row
+            col-lg-12 col-sm-12 justify-content-center">
 
         {% for document in documents %}
             <div class="document-item">
