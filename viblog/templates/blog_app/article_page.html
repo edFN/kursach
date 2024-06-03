@@ -41,6 +41,10 @@
                         <div class="article-{{ block.block_type }}">{% include 'blocks/table_image_block.html' with count_row=block.value.count_row count_column=block.value.count_column images=block.value.images %}</div>
                     {% elif block.block_type == 'code' %}
                         <div class="article-{{ block.block_type }}">{{ block }}</div>
+                    {%  elif block.block_type == 'document' %}
+                        <div class="article-{{ block.block_type }}">
+                            {% include 'blocks/document_block.html' with documents=block.value %}
+                        </div>
                     {% endif %}
                 {% endfor %}
             </div>
