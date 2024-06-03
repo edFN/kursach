@@ -3,6 +3,7 @@ from django.db import models
 from modelcluster.fields import ParentalManyToManyField
 from wagtail.admin.panels import FieldPanel
 from wagtail.blocks import RichTextBlock, ListBlock, TextBlock
+from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model
 from wagtail.images.blocks import ImageChooserBlock
@@ -70,7 +71,8 @@ class ArticlePage(Page):
         ('slider_image', SliderImageBlock()),
         ('inform_block', InformBlock()),
         ('table_image', TableImageBlock()),
-        ('code', CodeBlock())
+        ('code', CodeBlock()),
+        ('document', ListBlock(DocumentChooserBlock()))
     ], null=True, blank=True)
 
     content_panels = Page.content_panels + [
@@ -99,7 +101,8 @@ class ArticleReportModel(models.Model):
         ('slider_image', SliderImageBlock()),
         ('inform_block', InformBlock()),
         ('table_image', TableImageBlock()),
-        ('code', CodeBlock())
+        ('code', CodeBlock()),
+        ('document', ListBlock(DocumentChooserBlock()))
     ], null=True,blank=True)
     email = models.EmailField(verbose_name="Емейл отправителя", null=True, blank=True)
     message = models.TextField(verbose_name="Текст замечания", null=True,blank=True)
