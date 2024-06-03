@@ -110,17 +110,59 @@
         content: '';
     }
 
+    @media screen and (max-width: 700px) {
+        .slider-item{
+            width: 60%;
+            margin: 0 auto;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
+        .card-description-block{
+            margin: 0 auto;
+            justify-content: center;
+        }
+        .viewport{
+            max-height: 1200px;
+        }
+
+    }
+    @media screen and (max-width: 1000px) {
+        .slider-item{
+            width: 100%;
+            margin: 0 auto;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
+        .card-description-block{
+            margin: 0 auto;
+            justify-content: center;
+            width: 100%;
+        }
+        .viewport{
+            max-height: 1200px;
+        }
+        .card-image-block{
+            margin:0 auto;
+            width: 100%;
+        }
+        .category-block-card{
+            display: none;
+        }
+    }
+
 </style>
 
-<div class="slider-page-block col-lg-10">
+<div class="slider-page-block col-lg-12">
     <div class="slider-page-card viewport">
         <div class="slider-wrapper">
             {% for page in pages %}
                     <div class="slider-item">
-                        <div class="card-image-block me-lg-4 col-lg-3 thubnail-high">
+                        <div class="card-image-block me-lg-4 col-lg-6 col-sm-12 thubnail-high">
                             {% srcset_image page.specific.image_card width-{400,800} sizes="(max-height: 400px) 400px, 80vw" %}
                         </div>
-                        <div class="card-description-block flex col-lg-5 order-md-2 pt-2">
+                        <div class="card-description-block flex col-lg-6 col-md-4 col-sm-3 order-md-2 pt-2">
                             <div class="category-block-card">
                                 {% for category in page.specific.category.all %}
                                     <div class="category-text">{{ category }}</div>

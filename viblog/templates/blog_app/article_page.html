@@ -8,8 +8,8 @@
 
 {% block content %}
     <div class="row justify-content-center">
-        <div class="col-lg-8 gap-3">
-            <div class="article-type-info flex flex-row mb-4">
+        <div class="col-lg-8 gap-3 col-sm-12">
+            <div class="article-type-info flex flex-row mb-4" id="article_info" object_id="{{ page.id }}">
                 <div class="category-list-block">
                     {% for category in page.specific.category.all %}
                         <div class="article-category-block">
@@ -66,16 +66,25 @@
 
                 </div>
 
+
+                {% csrf_token %}
                 <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1"
-                           placeholder="name@example.com">
+                    <label for="exampleFormControlInput1" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="report_email_id"
+                           placeholder="name@example.com" required>
+                </div>
+
+
+
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Текст сообщения</label>
+                    <textarea class="form-control" id="report_message_id" rows="3"></textarea>
                 </div>
 
                 <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <button class="report__button">Отправить заявку</button>
                 </div>
+
             </div>
         </div>
 
@@ -103,7 +112,7 @@
                 })
             })
 
-            $('.moderation-report-close').click((e)=>{
+            $('.moderation-report-close').click((e) => {
                 reportItems = []
                 $('.moderation-overflow').toggle()
 
@@ -124,23 +133,23 @@
                 if (!reportItems.includes($(e.currentTarget).index())) {
                     reportItems.push($(e.currentTarget).index());
 
-                    let data=''
-                    reportItems.map((index,element)=>{
-                       data += `<div index=${index} class='reported_item'>Блок ${index+1}</div>`
+                    let data = ''
+                    reportItems.map((index, element) => {
+                        data += `<div index=${index} class='reported_item'>Блок ${index + 1}</div>`
                     })
 
                     $('.moderation-report__selected').html(data)
 
                 } else {
-                    console.log("Check",$(e.currentTarget).index())
+                    console.log("Check", $(e.currentTarget).index())
 
                     reportItems.splice(reportItems.indexOf(
                         $(e.currentTarget).index()), 1)
 
                     let data = ''
 
-                    reportItems.map((index,element)=>{
-                       data += `<div index=${index} class='reported_item'>Блок ${index+1}</div>`
+                    reportItems.map((index, element) => {
+                        data += `<div index=${index} class='reported_item'>Блок ${index + 1}</div>`
                     })
 
                     $('.moderation-report__selected').html(data)
@@ -150,7 +159,7 @@
                 console.log(reportItems);
             })
 
-            $(document).on('click', '.reported_item', (e)=>{
+            $(document).on('click', '.reported_item', (e) => {
                 const index = $(e.currentTarget).attr('index')
 
                 const node = $('.moderation').eq(index)
@@ -158,13 +167,42 @@
                 $(node).toggleClass('moderation-active')
 
                 reportItems.splice(reportItems.indexOf(
-                        index), 1)
+                    index), 1)
 
                 $(e.currentTarget).remove()
 
 
             })
 
+            $('.report__button').click((e) => {
+                $.ajax(
+                    {
+                        url: '/report/',
+                        method: "POST",
+                        data: {
+                            'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+                            'page_id': $("#article_info").attr('object_id'),
+                            'blocks': reportItems,
+                            'email': $("#report_email_id").val(),
+                            'message': $("#report_message_id").val()
+                        },
+                        success: () => {
+                            $('.moderation-overflow').toggle()
+                            $('.button-report').css({"display":"none"})
+
+                            const content_blocks = $('.article-content-block').children('div')
+
+                            $.each(content_blocks, (index, value) => {
+                                $(value).toggleClass('moderation')
+                            })
+
+                        },
+                        error: () => {
+                            alert("FUCK")
+                        }
+                    }
+                )
+            })
         })
 
 

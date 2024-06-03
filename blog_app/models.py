@@ -7,6 +7,7 @@ from wagtail.fields import StreamField
 from wagtail.images import get_image_model
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page
+from wagtail.search import index
 from wagtailcodeblock.blocks import CodeBlock
 
 from shared.blocks import SliderImageBlock, InformBlock, TableImageBlock
@@ -28,6 +29,7 @@ class CategoryArticle(models.Model):
 class ArticleListPage(Page):
     category = models.ForeignKey(CategoryArticle, verbose_name="Категории статей",
                                  null=False, blank=False, on_delete=models.CASCADE)
+
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         articles = ArticlePage.objects.live().public().filter(category=self.category)
@@ -76,9 +78,39 @@ class ArticlePage(Page):
         FieldPanel('content')
     ]
 
+    search_fields = Page.search_fields + [
+        index.SearchField('title'),
+        index.SearchField('content'),
+        index.SearchField('description')
+    ]
+
     def __str__(self):
         return self.title or ''
 
     class Meta:
         verbose_name = "Статья"
         verbose_name_plural = "Статьи"
+
+
+class ArticleReportModel(models.Model):
+    page = models.ForeignKey(ArticlePage, null=True, blank=True, on_delete=models.CASCADE)
+    report_items = StreamField(block_types=[
+        ('richtext', RichTextBlock()),
+        ('slider_image', SliderImageBlock()),
+        ('inform_block', InformBlock()),
+        ('table_image', TableImageBlock()),
+        ('code', CodeBlock())
+    ], null=True,blank=True)
+    email = models.EmailField(verbose_name="Емейл отправителя", null=True, blank=True)
+    message = models.TextField(verbose_name="Текст замечания", null=True,blank=True)
+
+
+    panels = [
+        FieldPanel('message',read_only=True), FieldPanel('page', read_only=True),
+        FieldPanel('report_items'), FieldPanel('email', read_only=True)
+    ]
+
+    class Meta:
+        verbose_name = "Замечание пользователя"
+        verbose_name_plural = "Замечания пользователей"
+

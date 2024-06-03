@@ -130,8 +130,11 @@ code{
 }
 
 .moderation-report-form{
+
     display: flex;
     flex-direction: column;
+
+    justify-content: space-between;
 
     gap:15px;
 
@@ -145,11 +148,11 @@ code{
 
     opacity: 1;
 
-    z-index: 20;
+    z-index: 999;
 
     border: 5px solid #0606b2;
 
-    width: 55rem;
+    width: 35rem;
     min-height: 50rem;
 
     color:white;
@@ -159,6 +162,10 @@ code{
 box-shadow: 2px 3px 12px 14px rgba(34, 60, 80, 0.2);
 
     border-radius: 10px;
+}
+
+.moderation-report-form input, .moderation-report-form textarea{
+    font-size: 1.02em;
 }
 
 .reported_item{
@@ -203,4 +210,32 @@ box-shadow: 2px 3px 12px 14px rgba(34, 60, 80, 0.2);
 .moderation-report__selected::-webkit-scrollbar {
     width: 7px;
     background-color: #f9f9fd;
+}
+
+.report__button{
+    border-radius: 10px;
+    background: #73f654;
+    color:white;
+    padding: 0.7rem 1.05rem ;
+    position: relative;
+    border: 2px solid green;
+}
+
+
+.report__button:active{
+    scale: 0.95;
+}
+@media screen and (max-width: 700px) {
+    .button-report{
+        display: none !important;
+    }
+    .article-actions-block{
+        justify-content: center;
+    }
+    .article-type-info {
+        flex-direction: column !important;
+    }
+    .category-list-block{
+        display: none;
+    }
 }
