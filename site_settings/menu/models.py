@@ -9,7 +9,7 @@ from wagtail.snippets.models import register_snippet
 
 class MenuItem(Orderable):
     link_title = models.CharField(blank=True, null=True, max_length=50)
-    link_url = models.CharField(max_length=500)
+    link_url = models.CharField(max_length=500, null=True, blank=True)
     link_page = models.ForeignKey(Page, null=True, blank=True,
                                   related_name="+", on_delete=models.CASCADE)
     open_in_new_tab = models.BooleanField(default=False)
@@ -23,13 +23,16 @@ class MenuItem(Orderable):
         FieldPanel('open_in_new_tab'),
     ]
 
+    def __str__(self):
+        return self.link_page.title
+
 
 @register_snippet
 class Menu(ClusterableModel):
     title = models.CharField(max_length=100)
     slug = AutoSlugField(populate_from=title, editable=True)
 
-    link_url = models.CharField(max_length=500)
+    link_url = models.CharField(max_length=500, null=True, blank=True)
     link_page = models.ForeignKey(Page, null=True, blank=True,
                                   related_name="+", on_delete=models.CASCADE)
 

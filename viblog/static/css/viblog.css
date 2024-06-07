@@ -76,7 +76,7 @@ content {
 
 .nav-list .nav-item {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     line-height: normal;
     height: 2.5rem;
@@ -84,11 +84,30 @@ content {
     padding: 25px 10px;
     font-weight: lighter;
     cursor: pointer;
+
 }
 
 .nav-item .active {
     color: orange;
 }
+
+.nav-item span{
+    display: block;
+}
+
+.submenu-button:hover{
+    scale: 0.75;
+}
+
+.submenu-section{
+    display: none;
+}
+
+.submenu-section.active{
+    display: block;
+    background: #9cc4bb
+}
+
 .nav-item span a{
     color:black;
 }

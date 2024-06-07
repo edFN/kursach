@@ -10,3 +10,11 @@ $('.menu-button').click((e)=>{
        right: 0
     }, 1000, ()=>{})
 })
+
+$('.submenu-button').click((e)=>{
+    const menuElementNode = e.target.parentNode.parentNode
+    const elementSubMenu = menuElementNode.nextSibling.nextSibling
+    console.log(elementSubMenu)
+    $(elementSubMenu).toggleClass('active')
+    console.log(elementSubMenu)
+})
