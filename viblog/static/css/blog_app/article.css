@@ -89,17 +89,17 @@ code{
     background: white;
     cursor:pointer;
     opacity: 0.4;
-    z-index: 4;
+    z-index: 1000;
 }
 .moderation:hover{
     background-color: white;
     opacity: 1.0;
-    z-index: 4;
+    z-index: 1000;
 }
 
 .moderation-active{
     opacity: 1.0;
-    z-index: 5;
+    z-index: 1000;
     background-color: white;
 }
 
@@ -120,7 +120,7 @@ code{
     background: #052249;
     opacity: 0.9;
     font-size: 1.75rem;
-    z-index: 0;
+    z-index: 890;
 }
 
 .moderation-overflow h3{
