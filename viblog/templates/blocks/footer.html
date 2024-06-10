@@ -2,7 +2,32 @@
 <footer>
     <div class="footer_content">
         <div class="footer__logo">
-            {{settings.site_settings.SiteSettings.title}}
+            <div class="footer__site_title">
+                {{settings.site_settings.SiteSettings.title}}
+            </div>
+
+            <div class="footer__phone mt-3" style="font-size: 0.56em;
+            text-align: left;">
+                {{ settings.site_settings.SiteSettings.phone }}
+            </div>
+
+            <div class="footer__email mt-3" style="font-size: 0.56em;
+            text-align: left;">
+                {{ settings.site_settings.SiteSettings.email }}
+            </div>
+
+            <div class="footer__owner mt-3" style="font-size: 0.56em;
+            text-align: left;">
+                {{ settings.site_settings.SiteSettings.owner_info }}
+            </div>
+
+        </div>
+        <div class="footer__menu">
+            {% for menu in settings.site_settings.SiteSettings.footer_menu.all %}
+                <div class="footer__menu_element">
+                    <a href="{{menu.link_page.url}}">{{ menu }}</a>
+                </div>
+            {% endfor %}
         </div>
         <div class="footer__text">
             {{settings.site_settings.SiteSettings.text_footer|richtext}}
