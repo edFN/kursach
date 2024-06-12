@@ -9,6 +9,7 @@ from wagtail.images import get_image_model
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page
 from wagtail.search import index
+from wagtail.snippets.models import register_snippet
 from wagtailcodeblock.blocks import CodeBlock
 
 from blog_app.utils import get_client_ip_address
@@ -17,6 +18,7 @@ from shared.blocks import SliderImageBlock, InformBlock, TableImageBlock
 
 # Create your models here.
 
+@register_snippet
 class CategoryArticle(models.Model):
     title = models.CharField("Название категории", max_length=128)
 
