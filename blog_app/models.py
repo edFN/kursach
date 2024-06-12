@@ -99,7 +99,11 @@ class ArticlePage(Page):
         except:
             context['is_liked'] = False
 
-        context['likes'] = UserLikesModel.objects.filter(article=context['page'], is_active=True).count()
+        try:
+            context['likes'] = UserLikesModel.objects.filter(article=context['page'], is_active=True).count()
+        except:
+            context['likes'] = 0
+
 
         print(context)
 
